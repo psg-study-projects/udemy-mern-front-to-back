@@ -4,3 +4,7 @@ npm i -D nodemon concurrently
 npm run server
 
 mongodb+srv://devadmin:<password>@devconnector-ea8l0.mongodb.net/test?retryWrites=true&w=majority
+
+
+% vim
+:set formatoptions-=cro
