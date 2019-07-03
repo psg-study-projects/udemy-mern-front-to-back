@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 // %TODO:
 // [ ] study async-await
@@ -60,8 +62,26 @@ async (req, res) => {
         await user.save();
 
         // Return json web token (to login in user right away on the frontend)
+        // see: jwt.io,  https://github.com/auth0/node-jsonwebtoken
+        const payload = {
+            user: {
+                id: user.id // 'id' is a mongoose abstraction
+            }
+        };
 
-        res.send('User registered');
+        jwt.sign(
+            payload, 
+            config.get('jwtSecret'),
+            { expiresIn: 360000 },
+            (err, token) => {
+                if (err) {
+                    throw err;
+                }
+                res.json({ token });
+            }
+        );
+
+        //res.send('User registered');
 
     } catch(err) {
         console.error(err.message);
