@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
 // @route   GET api/profile/user/:user_id
 // @desc    Get profile by user (id)
 // @acess   Public
@@ -122,6 +123,30 @@ async (req, res) => {
         res.json(profile);
     } catch(err) {
         console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+// @route   DELETE api/profile/user/:user_id
+// @desc    Delete profile, user, and posts
+// @acess   Private
+router.delete('/', auth, async (req, res) => {
+    try {
+        // %TODO: remove users posts
+
+        // Remove profile
+        await Profile.findOneAndRemove({ user: req.user.id }); // it's in the request due to the auth middleware (?)
+
+        // Remove user
+        await User.findOneAndRemove({ _id: req.user.id }); // 
+        res.json({ msg: 'User deleted' });
+
+    } catch(err) {
+        console.error(err.message);
+        if (err.kind === 'ObjectId') {
+            return res.status(400).json({ msg: 'Profile not found' });
+        }
         res.status(500).send('Server Error');
     }
 });
