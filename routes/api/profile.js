@@ -204,7 +204,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
         // Get remove index
         //   ~ indexOf() returns the first index at which a given array element can be found, or -1 if not present
         const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id); // %TODO: ???
-        if (removeIndex > 0) {
+        if (removeIndex >= 0) {
             console.log('Removing '+removeIndex);
             profile.experience.splice(removeIndex,1); // remove
             await profile.save();

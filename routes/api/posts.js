@@ -83,13 +83,12 @@ router.delete('/:id', auth, async (req, res) => {
     try {
         //await Post.findOneAndRemove({ _id: req.params.id });
         const post = await Post.findById(req.params.id);
-
         if (!post) {
             return res.status(404).json({ msg: 'Post not found' });
         }
 
         // Ensure user owns the post
-        // NOTE: req.user.id is a string
+        // NOTE: req.user.id is a string %TODO %STUDYME
         if ( post.user.toString() !== req.user.id ) {
             return res.status(401).json({ msg: 'Not authorized' });
         }
@@ -107,5 +106,63 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
+// @route   PUT api/posts/like/:id
+// @desc    Like a post
+// @access  Private
+router.put('/like/:id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ msg: 'Post not found' });
+        }
+
+        // Check if post has already been liked by this user %TODO %STUDYME
+        if ( post.likes.filter( like => like.user.toString() === req.user.id ).length > 0 ) {
+            return res.status(400).json({ msg: 'Post already liked by user' });
+        }
+        post.likes.unshift({ user: req.user.id }); // add logged-in user's id (from middleware)
+        await post.save();
+
+        res.json(post.likes);
+
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT api/posts/unlike/:id
+// @desc    Like a post
+// @access  Private
+router.put('/unlike/:id', auth, async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ msg: 'Post not found' });
+        }
+
+        // Check if post has already been liked by this user %TODO %STUDYME
+        if ( post.likes.filter( like => like.user.toString() === req.user.id ).length === 0 ) {
+            return res.status(400).json({ msg: 'Post has not yet been liked liked by user' });
+        }
+
+        // Get index for the like to remove %TODO %STUDYME
+        const removeIndex = post.likes.map( like => {
+            return like.user.toString();
+        }).indexOf(req.user.id);
+        if (removeIndex >= 0) {
+            post.likes.splice(removeIndex,1);
+            await post.save();
+        } else {
+            console.error('Illegal index '+removeIndex);
+        }
+
+        res.json(post.likes);
+
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;
