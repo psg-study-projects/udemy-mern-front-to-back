@@ -177,10 +177,80 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
         console.log(req.params.exp_id);
 
         // Get remove index
+        //   ~ indexOf() returns the first index at which a given array element can be found, or -1 if not present
         const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id); // %TODO: ???
         if (removeIndex > 0) {
             console.log('Removing '+removeIndex);
             profile.experience.splice(removeIndex,1); // remove
+            await profile.save();
+        } else {
+            console.error('Illegal index '+removeIndex);
+        }
+
+        res.json(profile);
+
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   PUT api/profile/education
+// @desc    Add profile education
+// @acess   Private
+router.put(
+    '/education', 
+    [
+        auth, 
+        [
+            check('school', 'school required').not().isEmpty(),
+            check('degree', 'degree required').not().isEmpty(),
+            check('fieldofstudy', 'Field of Study required').not().isEmpty(),
+            check('from', 'From date required').not().isEmpty()
+        ]
+    ], 
+    async (req, res) => {
+        const errors = validationResult(req);
+        if ( !errors.isEmpty() ) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // destructure body data
+        const { school, degree, fieldofstudy, from, to, current, description } = req.body;
+        const newEdu = { school, degree, fieldofstudy, from, to, current, description };
+
+        try {
+            const profile = await Profile.findOne({ user: req.user.id });
+            profile.education.unshift(newEdu);
+            await profile.save();
+            res.json(profile);
+        } catch(err) {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
+
+// @route   DELETE api/profile/education/:exp_Id
+// @desc    Delete education from profile
+// @acess   Private
+router.delete('/education/:edu_id', auth, async (req, res) => {
+    try {
+
+        const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
+
+        if (!profile) {
+            return res.status(400).json({ msg: 'Profile not found' });
+        }
+
+        console.log(req.params.edu_id);
+
+        // Get remove index
+        //   ~ indexOf() returns the first index at which a given array element can be found, or -1 if not present
+        const removeIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id); // %TODO: ???
+        if (removeIndex > 0) {
+            console.log('Removing '+removeIndex);
+            profile.education.splice(removeIndex,1); // remove
             await profile.save();
         } else {
             console.error('Illegal index '+removeIndex);
