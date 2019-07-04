@@ -162,6 +162,39 @@ router.put(
     }
 );
 
+// @route   DELETE api/profile/experience/:exp_Id
+// @desc    Delete experience from profile
+// @acess   Private
+router.delete('/experience/:exp_id', auth, async (req, res) => {
+    try {
+
+        const profile = await Profile.findOne({ user: req.user.id }).populate('user', ['name', 'avatar']);
+
+        if (!profile) {
+            return res.status(400).json({ msg: 'Profile not found' });
+        }
+
+        console.log(req.params.exp_id);
+
+        // Get remove index
+        const removeIndex = profile.experience.map(item => item.id).indexOf(req.params.exp_id); // %TODO: ???
+        if (removeIndex > 0) {
+            console.log('Removing '+removeIndex);
+            profile.experience.splice(removeIndex,1); // remove
+            await profile.save();
+        } else {
+            console.error('Illegal index '+removeIndex);
+        }
+
+        res.json(profile);
+
+    } catch(err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+
 // @route   DELETE api/profile/user/:user_id
 // @desc    Delete profile, user, and posts
 // @acess   Private
