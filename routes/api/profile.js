@@ -1,4 +1,6 @@
 const express = require('express');
+const request = require('request');
+const config = require('config');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator/check');
@@ -10,7 +12,7 @@ const User = require('../../models/User');
 
 // @route   GET api/profile
 // @desc    Get all profiles
-// @acess   Public
+// @access   Public
 router.get('/', async (req, res) => {
     try {
         const profiles = await Profile.find().populate('user', ['name', 'avatar']);
@@ -23,7 +25,7 @@ router.get('/', async (req, res) => {
 
 // @route   GET api/profile/user/:user_id
 // @desc    Get profile by user (id)
-// @acess   Public
+// @access   Public
 router.get('/user/:user_id', async (req, res) => {
     try {
         const profile = await Profile.findOne({ user: req.params.user_id }).populate('user', ['name', 'avatar']);
@@ -43,7 +45,7 @@ router.get('/user/:user_id', async (req, res) => {
 
 // @route   GET api/profile/me
 // @desc    Get current user's profile
-// @acess   Private
+// @access   Private
 router.get('/me', auth, async (req, res) => {
     try {
         // key 'user' corresponds to FK in Profile Schema
@@ -129,7 +131,7 @@ async (req, res) => {
 
 // @route   PUT api/profile/experience
 // @desc    Add profile experience
-// @acess   Private
+// @access   Private
 router.put(
     '/experience', 
     [
@@ -162,9 +164,32 @@ router.put(
     }
 );
 
+// @route   DELETE api/profile/user/:user_id
+// @desc    Delete profile, user, and posts
+// @access   Private
+router.delete('/', auth, async (req, res) => {
+    try {
+        // %TODO: remove users posts
+
+        // Remove profile
+        await Profile.findOneAndRemove({ user: req.user.id }); // it's in the request due to the auth middleware (?)
+
+        // Remove user
+        await User.findOneAndRemove({ _id: req.user.id }); // 
+        res.json({ msg: 'User deleted' });
+
+    } catch(err) {
+        console.error(err.message);
+        if (err.kind === 'ObjectId') {
+            return res.status(400).json({ msg: 'Profile not found' });
+        }
+        res.status(500).send('Server Error');
+    }
+});
+
 // @route   DELETE api/profile/experience/:exp_Id
 // @desc    Delete experience from profile
-// @acess   Private
+// @access   Private
 router.delete('/experience/:exp_id', auth, async (req, res) => {
     try {
 
@@ -197,7 +222,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
 
 // @route   PUT api/profile/education
 // @desc    Add profile education
-// @acess   Private
+// @access   Private
 router.put(
     '/education', 
     [
@@ -233,7 +258,7 @@ router.put(
 
 // @route   DELETE api/profile/education/:exp_Id
 // @desc    Delete education from profile
-// @acess   Private
+// @access   Private
 router.delete('/education/:edu_id', auth, async (req, res) => {
     try {
 
@@ -264,28 +289,34 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     }
 });
 
+// @route   GET api/profile/github/:username
+// @desc    Get user repos from Github
+// @access   Public
+router.get('/github/:username', async (req, res) => {
 
-// @route   DELETE api/profile/user/:user_id
-// @desc    Delete profile, user, and posts
-// @acess   Private
-router.delete('/', auth, async (req, res) => {
     try {
-        // %TODO: remove users posts
 
-        // Remove profile
-        await Profile.findOneAndRemove({ user: req.user.id }); // it's in the request due to the auth middleware (?)
+        const options = {
+            url: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubClientId')}&client_secret=${config.get('githubSecret')}`,
+            method: 'GET',
+            headers: { 'user-agent': 'node.js' }
+        };
 
-        // Remove user
-        await User.findOneAndRemove({ _id: req.user.id }); // 
-        res.json({ msg: 'User deleted' });
+        request(options, (error, response, body )  => {
+            if (error) console.error(error);
+
+            if ( response.statusCode !== 200 ) {
+                return res.status(404).json({ msg: 'No Github profile found' });
+            }
+
+            res.json( JSON.parse(body) );
+        });
 
     } catch(err) {
         console.error(err.message);
-        if (err.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Profile not found' });
-        }
         res.status(500).send('Server Error');
     }
 });
+
 
 module.exports = router;
