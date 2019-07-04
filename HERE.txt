@@ -7,3 +7,8 @@ Section 5 Chapter 24
 Section 3 Chapter 10
 
 
+
+
+If you are interested in building the theme from scratch using HTML/CSS/Sass, I have a 4 part series on YouTube:
+
+https://www.youtube.com/watch?v=IFM9hbapeA0&list=PLillGF-Rfqba3xeEvDzIcUCxwMlGiewfV

@@ -3,6 +3,10 @@ npm i express express-validator bcryptjs config gravatar jsonwebtoken mongoose r
 npm i -D nodemon concurrently
 npm run server
 
+npx create-react-app client
+
+npm run dev
+
 mongodb+srv://devadmin:<password>@devconnector-ea8l0.mongodb.net/test?retryWrites=true&w=majority
 
 
