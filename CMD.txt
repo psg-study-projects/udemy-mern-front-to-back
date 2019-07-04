@@ -7,4 +7,4 @@ mongodb+srv://devadmin:<password>@devconnector-ea8l0.mongodb.net/test?retryWrite
 
 
 % vim
-:set formatoptions-=cro
+set formatoptions-=cro
