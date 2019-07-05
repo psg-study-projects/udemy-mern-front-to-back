@@ -1,13 +1,14 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 //import axios from 'axios';
 
 // setAlert is accessible  via props b/c of connect (?)
 //const Register = (props) =>
-const Register = ({ setAlert }) => { // destructure the props...can write setAlert instead of props.setAlert below
+const Register = ({ setAlert, register }) => { // destructure the props...can write setAlert instead of props.setAlert below
 
     // "Hooks":
     //      state is formData object
@@ -29,7 +30,8 @@ const Register = ({ setAlert }) => { // destructure the props...can write setAle
         if ( password !== password2 ) {
             setAlert('Passwords must match', 'danger'); // via redux (connect)
         } else {
-            //console.log(formData);
+            register({ name, email, password }); // as pulled out from form data
+
             /* use axios
             const newUser = {
                 name,
@@ -66,7 +68,6 @@ const Register = ({ setAlert }) => { // destructure the props...can write setAle
                         name="name" 
                         value={name}
                         onChange={e => onChange(e)} // separate on change function, instead of calling setFormData directly
-                        required 
                     />
                 </div>
                 <div className="form-group">
@@ -76,7 +77,6 @@ const Register = ({ setAlert }) => { // destructure the props...can write setAle
                         value={email}
                         onChange={e => onChange(e)}
                         name="email" 
-                        required 
                     />
                     <small className="form-text">
                         This site uses Gravatar so if you want a profile image, use a
@@ -113,10 +113,11 @@ const Register = ({ setAlert }) => { // destructure the props...can write setAle
 };
 
 Register.propTypes = {
-    setAlert: PropTypes.func.isRequired
+    setAlert: PropTypes.func.isRequired,
+    register: PropTypes.func.isRequired
 };
 
 //export default Register;
 // connect: takes in (1) any state you want to map, (2) object with any actions you want to use, which
 // allows us ot access props.setAlert 
-export default connect(null, { setAlert })(Register);
+export default connect(null, { setAlert, register })(Register);
