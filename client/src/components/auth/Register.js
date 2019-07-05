@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 // setAlert is accessible  via props b/c of connect (?)
 //const Register = (props) =>
-const Register = ({ setAlert }) => { // destructure the props...
+const Register = ({ setAlert }) => { // destructure the props...can write setAlert instead of props.setAlert below
 
     // "Hooks":
     //      state is formData object
@@ -27,7 +27,7 @@ const Register = ({ setAlert }) => { // destructure the props...
     const onSubmit = async e => {
         e.preventDefault();
         if ( password !== password2 ) {
-            setAlert('Passwords must match', 'danger');
+            setAlert('Passwords must match', 'danger'); // via redux (connect)
         } else {
             //console.log(formData);
             /* use axios
@@ -117,5 +117,6 @@ Register.propTypes = {
 };
 
 //export default Register;
-// connect: takes in (1) any state you want to map, (2) object with any actions you want to use
+// connect: takes in (1) any state you want to map, (2) object with any actions you want to use, which
+// allows us ot access props.setAlert 
 export default connect(null, { setAlert })(Register);

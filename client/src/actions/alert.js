@@ -7,7 +7,7 @@ export const setAlert = (msg, alertType, timeout=3000) => dispatch => {
     dispatch({
         type: SET_ALERT,
         payload: { msg, alertType, id }
-    });
+    }); // "dispatches" to the reducer (?)
 
     setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
 }

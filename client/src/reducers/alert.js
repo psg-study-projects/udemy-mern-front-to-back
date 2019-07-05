@@ -11,6 +11,8 @@ export default function(state=initialState, action) {
     switch (type) {
         case SET_ALERT:
             // state is immutable, so you have to include all state
+            // updates *all* state, then 'render' (components) happens (?)
+            //  with updated state (via props)
             return [...state, payload];
         case REMOVE_ALERT:
             // remove an alert by ID
