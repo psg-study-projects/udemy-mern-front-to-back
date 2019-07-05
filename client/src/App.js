@@ -24,6 +24,7 @@ const App = () => (
 export default App;
 
 // %TODO: study
+// ~ "Hooks"
 // ~ Fragment
 // ~ Route, exact path
 // ~ BrowserRouter
