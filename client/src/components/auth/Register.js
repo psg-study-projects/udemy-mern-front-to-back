@@ -1,8 +1,13 @@
 import React, { Fragment, useState } from 'react';
+import { connect } from 'react-redux';
+import { setAlert } from '../../actions/alert';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 //import axios from 'axios';
 
-const Register = () => {
+// setAlert is accessible  via props b/c of connect (?)
+//const Register = (props) =>
+const Register = ({ setAlert }) => { // destructure the props...
 
     // "Hooks":
     //      state is formData object
@@ -22,7 +27,7 @@ const Register = () => {
     const onSubmit = async e => {
         e.preventDefault();
         if ( password !== password2 ) {
-            console.log('Passwords must match');
+            setAlert('Passwords must match', 'danger');
         } else {
             //console.log(formData);
             /* use axios
@@ -107,4 +112,10 @@ const Register = () => {
     );
 };
 
-export default Register;
+Register.propTypes = {
+    setAlert: PropTypes.func.isRequired
+};
+
+//export default Register;
+// connect: takes in (1) any state you want to map, (2) object with any actions you want to use
+export default connect(null, { setAlert })(Register);
