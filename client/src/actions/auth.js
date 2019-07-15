@@ -4,6 +4,8 @@ import setAuthToken from '../utils/setAuthToken';
 import { 
     REGISTER_SUCCESS, 
     REGISTER_FAIL,
+    LOGIN_SUCCESS, 
+    LOGIN_FAIL,
     USER_LOADED,
     AUTH_ERROR
 } from '../actions/types';
@@ -29,6 +31,35 @@ export const loadUser = () => async dispatch => {
     }
 }
 
+// Login User
+export const login = ({ email, password }) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    };
+
+    const body = JSON.stringify({ email, password });
+console.log('body: '+body);
+
+    try {
+        const res = await axios.post('/api/auth', body, config);
+        dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.data
+        });
+        dispatch(loadUser()); // %TODO ??? (dispatch loadUser so it runs immediately)
+    } catch (err) {
+        const errors = err.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+        }
+        dispatch({
+            type: LOGIN_FAIL
+        });
+    }
+}
+
 // %TODO: compare with actions/alert.js
 export const register = ({ name, email, password }) => async dispatch => {
     const config = {
@@ -45,6 +76,7 @@ export const register = ({ name, email, password }) => async dispatch => {
             type: REGISTER_SUCCESS,
             payload: res.data
         });
+        dispatch(loadUser()); // %TODO ???
     } catch (err) {
         const errors = err.response.data.errors;
         if (errors) {

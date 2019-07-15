@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { login } from '../../actions/auth';
+import PropTypes from 'prop-types';
 
-const Login = () => {
+const Login = ({ login, isAuthenticated }) => {
     const [formData, setFormData] = useState({
         email:'',
         password:''
@@ -13,22 +16,28 @@ const Login = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
+        console.log('Calling login() from Auth comp...'+email);
+        login({email, password});
+    }
+
+    // Redirect if logged in
+    if (isAuthenticated) {
+        // react-router
+        return <Redirect to="/dashboard" />
     }
 
     return (
         <Fragment>
-            <div>Login</div>
             <h1 className="large text-primary">Sign In</h1>
             <p className="lead"><i className="fas fa-user"></i> Sign Into Your Account</p>
             <form className="form" onSubmit={e => onSubmit(e)}> 
                 <div className="form-group">
                     <input 
-                        type="email" 
+                        type="text" 
                         placeholder="Email Address" 
                         value={email}
                         onChange={e => onChange(e)}
                         name="email" 
-                        required 
                     />
                     <small className="form-text">
                         This site uses Gravatar so if you want a profile image, use a
@@ -37,7 +46,7 @@ const Login = () => {
                 </div>
                 <div className="form-group">
                     <input
-                        type="password"
+                        type="text"
                         placeholder="Password"
                         name="password"
                         value={password}
@@ -54,4 +63,19 @@ const Login = () => {
     );
 };
 
-export default Login;
+Login.propTypes = {
+    login: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool
+};
+
+// mapStateToProps: Bring in auth state for redirect (has isAuthenticated)
+// ~ alert code
+const mapStateToProps = state => ({
+    //auth: state.auth // will give us everything (see reducer)
+    isAuthenticated: state.auth.isAuthenticated // we just need isAutheniticated
+});
+
+export default connect(
+    mapStateToProps, 
+    { login }
+)(Login);
