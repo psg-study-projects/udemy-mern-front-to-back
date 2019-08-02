@@ -80,6 +80,7 @@ export const register = ({ name, email, password }) => async dispatch => {
         });
         dispatch(loadUser()); // %TODO ???
     } catch (err) {
+        // Validation errors (?)
         const errors = err.response.data.errors;
         if (errors) {
             errors.forEach(error => dispatch(setAlert(error.msg, 'danger'))); // %NOTE!

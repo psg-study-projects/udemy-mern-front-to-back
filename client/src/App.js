@@ -57,5 +57,12 @@ export default App;
 // ~ Route, exact path
 // ~ BrowserRouter
 // ~ Private Route Component
+// ~ Dobule arrow function
+//    o eg: export const createProfile = (formData, history, edit=false) => async dispatch => {
 //
+// In CreateProfile.js...
+// export default connect(
+//   null, 
+//   { createProfile }
+// )(withRouter(CreateProfile)); // <<=== ??  withRouter wrapper call?
 //
