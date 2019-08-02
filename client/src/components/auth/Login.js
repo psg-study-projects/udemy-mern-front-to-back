@@ -17,7 +17,7 @@ const Login = ({ login, isAuthenticated }) => {
     const onSubmit = async e => {
         e.preventDefault();
         console.log('Calling login() from Auth comp...'+email);
-        login({email, password});
+        login(email, password);
     }
 
     // Redirect if logged in
@@ -71,7 +71,7 @@ Login.propTypes = {
 // mapStateToProps: Bring in auth state for redirect (has isAuthenticated)
 // ~ alert code
 const mapStateToProps = state => ({
-    //auth: state.auth // will give us everything (see reducer)
+    //auth: state.auth // will give us everything (see initState in reducer)
     isAuthenticated: state.auth.isAuthenticated // we just need isAutheniticated
 });
 

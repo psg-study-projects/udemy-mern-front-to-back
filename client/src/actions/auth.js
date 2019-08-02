@@ -4,11 +4,12 @@ import setAuthToken from '../utils/setAuthToken';
 import { 
     REGISTER_SUCCESS, 
     REGISTER_FAIL,
+    USER_LOADED,
+    AUTH_ERROR,
     LOGIN_SUCCESS, 
     LOGIN_FAIL,
     LOGOUT,
-    USER_LOADED,
-    AUTH_ERROR
+    CLEAR_PROFILE
 } from '../actions/types';
 
 
@@ -33,7 +34,7 @@ export const loadUser = () => async dispatch => {
 }
 
 // Login User
-export const login = ({ email, password }) => async dispatch => {
+export const login = (email, password) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'application/json'
@@ -91,5 +92,6 @@ export const register = ({ name, email, password }) => async dispatch => {
 
 // Logout / Clear Profile
 export const logout = () => dispatch => {
+    dispatch({ type: CLEAR_PROFILE }); // so last user's profile doesnt' show up
     dispatch({ type: LOGOUT });
 }

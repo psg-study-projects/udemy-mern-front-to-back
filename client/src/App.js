@@ -50,10 +50,10 @@ const App = () => {
 export default App;
 
 // %TODO: study
-// ~ "Hooks"
+// ~ "Hooks" & useEffect
 // ~ Fragment
 // ~ Route, exact path
 // ~ BrowserRouter
-//
+// ~ Private Route Component
 //
 //

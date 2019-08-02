@@ -1,5 +1,11 @@
 https://www.udemy.com/mern-stack-front-to-back/learn/lecture/10055150#content
 
+% Thurs 8/1
+Start Ch 46
+
+% Wed 7/31
+Start Ch 43
+
 % Fri 7/5
 Left off at Chapter 42 @ 8:00
 
@@ -19,3 +25,18 @@ Section 3 Chapter 10
 If you are interested in building the theme from scratch using HTML/CSS/Sass, I have a 4 part series on YouTube:
 
 https://www.youtube.com/watch?v=IFM9hbapeA0&list=PLillGF-Rfqba3xeEvDzIcUCxwMlGiewfV
+
+Simple text changes to main menu system. e.g. change “Quick Links” to “Links”
+Change the refresh interval on the carousel
+Edit the floor maps if the map itself needs to change, e.g. move cubicle structure
+
+
+Change on Staging
+
+Test on Staging
+
+git commit
+
+git push
+
+on production, git pull
