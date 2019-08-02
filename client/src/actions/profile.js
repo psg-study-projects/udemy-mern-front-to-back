@@ -25,13 +25,18 @@ export const getCurrentProfile = () => async dispatch => {
 // Create or update a profile
 // history: so we can redirect after form submit (.push)
 // edit: create vs update (?)
-export const createProfile = (formData, history, edit=false) => async dispatch => {
+export const createProfile = (
+    formData, 
+    history, 
+    edit=false
+) => async dispatch => {
     try {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
+
         // make request to api.profile
         const res = await axios.post('/api/profile', formData, config);
 
@@ -40,7 +45,7 @@ export const createProfile = (formData, history, edit=false) => async dispatch =
             payload: res.data
         });
 
-        dispatch( setAlert(edit ? 'Profile Updated' : 'Profile Created') );
+        dispatch( setAlert(edit ? 'Profile Updated' : 'Profile Created', 'success') );
 
         // redirecting in an action: use history object (vs component)
         if (!edit) {

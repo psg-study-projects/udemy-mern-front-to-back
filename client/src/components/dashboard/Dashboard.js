@@ -3,7 +3,8 @@ import { Link}  from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect}  from 'react-redux';
 import Spinner from '../layout/Spinner';
-import { getCurrentProfile}  from '../../actions/profile';
+import DashboardActions from './DashboardActions';
+import { getCurrentProfile }  from '../../actions/profile';
 
 // racfp (arrow function w/ prop types)
 const Dashboard = ({ 
@@ -24,7 +25,7 @@ const Dashboard = ({
         </p>
         { profile !== null ? 
                 <Fragment>
-                    has
+                    <DashboardActions />
                 </Fragment> 
                 : 
                 <Fragment>
