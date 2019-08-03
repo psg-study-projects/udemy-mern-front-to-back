@@ -65,3 +65,58 @@ export const createProfile = (
         });
     }
 }
+
+// Add Experience
+export const addExperience = (formData, history) => async dispatch => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const res = await axios.put('/api/profile/experience', formData, config);
+
+        dispatch( setAlert('Experience Added', 'success') );
+
+        history.push('/dashboard');
+
+    } catch(err) {
+        // Validation errors (?)
+        const errors = err.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger'))); // %NOTE!
+        }
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+}
+
+// Add Education
+export const addEducation = (formData, history) => async dispatch => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        const res = await axios.put('/api/profile/education', formData, config);
+
+        dispatch( setAlert('Education Added', 'success') );
+
+        history.push('/dashboard');
+
+    } catch(err) {
+        // Validation errors (?)
+        const errors = err.response.data.errors;
+        if (errors) {
+            errors.forEach(error => dispatch(setAlert(error.msg, 'danger'))); // %NOTE!
+        }
+
+        dispatch({
+            type: PROFILE_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+}

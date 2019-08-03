@@ -150,4 +150,3 @@ export default connect(
     null, 
     { createProfile }
 )(withRouter(CreateProfile));
-
