@@ -3,6 +3,7 @@ import { setAlert } from './alert';
 
 import { 
     GET_PROFILE, 
+    UPDATE_PROFILE, 
     PROFILE_ERROR
 } from '../actions/types';
 
@@ -76,6 +77,11 @@ export const addExperience = (formData, history) => async dispatch => {
         }
         const res = await axios.put('/api/profile/experience', formData, config);
 
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
+
         dispatch( setAlert('Experience Added', 'success') );
 
         history.push('/dashboard');
@@ -102,6 +108,11 @@ export const addEducation = (formData, history) => async dispatch => {
             }
         }
         const res = await axios.put('/api/profile/education', formData, config);
+
+        dispatch({
+            type: UPDATE_PROFILE,
+            payload: res.data
+        });
 
         dispatch( setAlert('Education Added', 'success') );
 
