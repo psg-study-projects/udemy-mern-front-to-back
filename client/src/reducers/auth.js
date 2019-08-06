@@ -5,6 +5,7 @@ import {
     LOGIN_FAIL,
     LOGOUT,
     USER_LOADED,
+    ACCOUNT_DELETED, 
     AUTH_ERROR
 } from '../actions/types';
 
@@ -43,6 +44,7 @@ export default function(state=initialState, action) {
         case LOGIN_FAIL:
         case LOGOUT:
         case AUTH_ERROR:
+        case ACCOUNT_DELETED:
             // clear everything out
             localStorage.removeItem('token');
             return {

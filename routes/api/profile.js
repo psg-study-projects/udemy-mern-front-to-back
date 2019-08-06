@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator/check');
 // models
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 
 // @route   GET api/profile
@@ -169,7 +170,8 @@ router.put(
 // @access   Private
 router.delete('/', auth, async (req, res) => {
     try {
-        // %TODO: remove users posts
+        // Remove users posts
+        await Post.deleteMany({ user: req.user.id }); // %TODO NOTE deleteMany
 
         // Remove profile
         await Profile.findOneAndRemove({ user: req.user.id }); // it's in the request due to the auth middleware (?)
@@ -273,19 +275,19 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
         // Get remove index
         //   ~ indexOf() returns the first index at which a given array element can be found, or -1 if not present
         const removeIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id); // %TODO: ???
-        if (removeIndex > 0) {
+        if (removeIndex >= 0) {
             console.log('Removing '+removeIndex);
             profile.education.splice(removeIndex,1); // remove
             await profile.save();
         } else {
-            console.error('Illegal index '+removeIndex);
+            console.error('Delete Profile -- Illegal index '+removeIndex);
         }
 
         res.json(profile);
 
     } catch(err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).send('Server Error: Delete Profile');
     }
 });
 

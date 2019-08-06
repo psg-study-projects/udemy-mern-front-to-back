@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
+//import { withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
+import { deleteEducation } from '../../actions/profile';
 
 const Education = ({ 
-    education 
+    education, 
+    deleteEducation 
 }) => {
 
     const educations = education.map(edu => (
@@ -21,15 +24,15 @@ const Education = ({
                 }
             </td>
             <td>
-                <button className="btn btn-danger">Delete</button>
+                <button onClick={() => deleteEducation(edu._id)} className="btn btn-danger">Delete</button>
             </td>
         </tr>
     ));
 
     return (
         <Fragment>
-            <h2 class="my-2">Education Credentials</h2>
-            <table class="table">
+            <h2 className="my-2">Education Credentials</h2>
+            <table className="table">
                 <thead>
                     <tr>
                         <th>School</th>
@@ -45,7 +48,11 @@ const Education = ({
 }
 
 Education.propTypes = {
-    education: PropTypes.array.isRequired
+    education: PropTypes.array.isRequired,
+    deleteEducation: PropTypes.func.isRequired
 }
 
-export default Education;
+export default connect(
+    null, 
+    { deleteEducation }
+)(Education);
