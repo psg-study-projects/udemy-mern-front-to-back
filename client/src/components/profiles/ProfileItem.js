@@ -1,8 +1,7 @@
 // racfp (arrow function w/ prop types)
-import React, { Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link}  from 'react-router-dom';
-import { getProfiles }  from '../../actions/profile';
+import { Link }  from 'react-router-dom';
 
 const ProfileItem = ({ 
     profile : {

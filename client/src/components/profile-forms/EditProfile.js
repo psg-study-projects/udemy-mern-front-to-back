@@ -52,7 +52,7 @@ const EditProfile = ({
             youtube:        loading || !profile.social ? '' : profile.social.youtube,
             instagram:      loading || !profile.social ? '' : profile.social.instagram
         });
-    }, [loading]); // when it loads, that's when we want this to run
+    }, [loading, getCurrentProfile]); // when it loads, that's when we want this to run
 
     // %FIXME: DRY
     const {

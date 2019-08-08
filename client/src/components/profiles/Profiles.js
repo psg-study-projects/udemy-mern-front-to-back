@@ -14,7 +14,7 @@ const Profiles = ({
     // As soon as this runs, we want to run get profiles...
     useEffect(() => {
         getProfiles();
-    }, []);
+    }, [getProfiles]); // need to add as dependency to get rid of warning
 
     return <Fragment> 
         { loading ? 
