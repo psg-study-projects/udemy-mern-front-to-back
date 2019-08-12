@@ -3,6 +3,7 @@ import { setAlert } from './alert';
 
 import { 
     GET_POSTS, 
+    GET_POST, 
     ADD_POST, 
     DELETE_POST, 
     UPDATE_LIKES, 
@@ -15,6 +16,22 @@ export const getPosts = () => async dispatch => {
         const res = await axios.get('/api/posts');
         dispatch({
             type: GET_POSTS,
+            payload: res.data
+        });
+    } catch(err) {
+        dispatch({
+            type: POST_ERROR,
+            payload: { msg: err.response.statusText, status: err.response.status }
+        });
+    }
+}
+
+// Get a single post by id
+export const getPost = id => async dispatch => {
+    try {
+        const res = await axios.get(`/api/posts/${id}`);
+        dispatch({
+            type: GET_POST,
             payload: res.data
         });
     } catch(err) {

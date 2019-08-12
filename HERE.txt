@@ -1,13 +1,7 @@
 https://www.udemy.com/mern-stack-front-to-back/learn/lecture/10055150#content
 
-% Thurs 8/8
-Start Ch 60
-
-% Tues 8/6
-Start Ch 53
-
-% Monday 8/5
-Start Ch 51
+% Mon 8/12
+Start Ch 65
 
 % Wed 7/31
 Start Ch 43
