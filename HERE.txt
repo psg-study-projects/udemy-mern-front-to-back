@@ -40,3 +40,12 @@ git commit
 git push
 
 on production, git pull
+
+%%% HEROKU
+heroku login
+
+Build out static assets
+$ pushd client
+$ npm run build
+
+...or, post-build script on heroku
