@@ -5,7 +5,7 @@ import { connect }  from 'react-redux';
 import PostItem from '../posts/PostItem';
 import { addComment }  from '../../actions/post';
 
-const Comment = ({ 
+const CommentForm = ({ 
     postId,
     addComment
 }) => {
@@ -37,11 +37,11 @@ const Comment = ({
     );
 }
 
-Comment.propTypes = {
+CommentForm.propTypes = {
     addComment:  PropTypes.func.isRequired
 }
 
 export default connect(
     null, 
     { addComment } 
-)(Comment);
+)(CommentForm);
