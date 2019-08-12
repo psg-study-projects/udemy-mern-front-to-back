@@ -4,10 +4,8 @@ import PropTypes from 'prop-types';
 import { connect }  from 'react-redux';
 import Spinner from '../layout/Spinner';
 import PostItem from '../posts/PostItem';
+import CommentForm from '../post/CommentForm';
 import { Link }  from 'react-router-dom';
-//import ProfileTop from './ProfileTop';
-//import ProfileAbout from './ProfileAbout';
-//import ProfileExperience from './ProfileExperience';
 import { getPost }  from '../../actions/post';
 
 const Post = ({ 
@@ -26,6 +24,7 @@ const Post = ({
             Back to Posts
         </Link>
         <PostItem post={post} showActions={false} />
+        <CommentForm postId={post._id} />
     </Fragment>;
 }
 

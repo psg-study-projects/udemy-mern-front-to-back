@@ -3,6 +3,8 @@ import {
     GET_POST, 
     ADD_POST, 
     DELETE_POST, 
+    ADD_COMMENT, 
+    REMOVE_COMMENT, 
     UPDATE_LIKES, 
     POST_ERROR
 } from '../actions/types';
@@ -59,6 +61,23 @@ export default function(state=initialState, action) {
                 posts: state.posts.map(post => 
                     post._id===payload.id ? { ...post, likes: payload.likes } : post
                 ),
+                loading: false
+            };
+        case ADD_COMMENT:
+            // only need to edit single post part of it (on single post page), it's an object, we want whatever's in it currenlty, and then we want to replace comments with the payload
+            return {
+                ...state,
+                post: { ...state.post, comments: payload },
+                loading: false
+            };
+        case REMOVE_COMMENT:
+            return {
+                ...state,
+                post: { 
+                    ...state.post, 
+                    // %TODO (???) bring in all comments in state & UI *except* the one we just deleted from the server
+                    comments: state.post.comments.filter(comment => comment._id!==payload)
+                },
                 loading: false
             };
         default:
